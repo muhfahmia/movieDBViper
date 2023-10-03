@@ -47,8 +47,8 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     func setupUI() {
         self.addSubview(movieImage)
         self.addSubview(moviesTitle)
-        movieImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor)
-        moviesTitle.anchor(top: movieImage.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 5, paddingRight: 5)
+        movieImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingBottom: 5)
+        moviesTitle.anchor(top: movieImage.bottomAnchor ,left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 5, paddingRight: 5)
     }
     
     func configure(with movie: MovieModel?) {

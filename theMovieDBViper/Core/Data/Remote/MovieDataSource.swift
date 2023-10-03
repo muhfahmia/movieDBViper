@@ -37,5 +37,4 @@ class MovieListDataSource: MovieListDataSourceProtocol {
             }
         }
     }
-    
 }

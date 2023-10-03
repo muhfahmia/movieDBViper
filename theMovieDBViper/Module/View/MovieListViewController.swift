@@ -8,30 +8,40 @@
 import UIKit
 import SkeletonView
 
-protocol MovieListViewToPresenterProtocol {
-    func movieListUpdateSuccess()
+protocol MovieListViewProtocol {
+    var movieListPresenter: MovieListPresenterProtocol? { get set }
+    func movieListUpdateSuccess(with movies: [MovieModel])
     func movieListUpdateFail()
 }
 
-class MovieListViewController: UIViewController, MovieListViewToPresenterProtocol {
+class MovieListViewController: UIViewController, MovieListViewProtocol {
     
-    var movieListPresenter: MovieListPresenterToViewProtocol?
+    var movieListPresenter: MovieListPresenterProtocol?
     
     enum sectionLayout: Int, CaseIterable {
-        case filterMovie
         case movieList
     }
 
     var collectionView: UICollectionView!
+    var movieListDataSource: UICollectionViewDiffableDataSource<sectionLayout, MovieModel>!
+    var movieListSnapshot = NSDiffableDataSourceSnapshot<sectionLayout, MovieModel>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
-        self.title = "Movies"
-        
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.black, // Change the color to your desired color
+        ]
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.titleTextAttributes = titleAttributes
+        navigationController?.navigationBar.largeTitleTextAttributes = titleAttributes
+        self.title = "Popular Movies"
+    
         setupCollectionView()
         setupCellRegister()
+        setupCollectionViewDataSource()
         
+        movieListPresenter?.getMovieList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,56 +49,39 @@ class MovieListViewController: UIViewController, MovieListViewToPresenterProtoco
     
     }
     
-    func movieListUpdateSuccess() {
-        DispatchQueue.main.async {
-            self.collectionView.reloadSections(IndexSet(integer: 1))
-        }
-        print("update dari view")
+    func movieListUpdateSuccess(with movies: [MovieModel]) {
+        self.movieListSnapshot.appendItems(movies, toSection: .movieList)
+        self.movieListDataSource.apply(movieListSnapshot, animatingDifferences: false)
     }
     
     func movieListUpdateFail() {
         print("all data reloaded")
     }
+    
+    
 }
 
-extension MovieListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension MovieListViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let countMovies = movieListPresenter?.movies.count ?? 0
+        let countMovies = movieListSnapshot.numberOfItems
         if indexPath.row == countMovies - 1 {
             movieListPresenter?.getMovieList()
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        case 1:
-            return movieListPresenter?.movies.count ?? 0
-        default:
-            return 5
-        }
-    }
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        2
+        1
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let section = indexPath.section
-        
-        if section == 1 {
-            let movie = movieListPresenter?.movies[indexPath.row]
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as! MovieListCollectionViewCell
-            cell.configure(with: movie)
-            self.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
-            return cell
-        }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterMovieCollectionViewCell.identifier, for: indexPath) as! FilterMovieCollectionViewCell
-            return cell
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let section = sectionLayout(rawValue: indexPath.section)
+        switch section {
+        case .movieList:
+            movieListPresenter?.pushToDetail(indexPath: indexPath)
+        case .none:
+            print(indexPath.row)
         }
-        
     }
 }
 
@@ -96,39 +89,42 @@ extension MovieListViewController: UICollectionViewDataSource, UICollectionViewD
 //setup custom function
 
 extension MovieListViewController {
+    
+    func setupCollectionView() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: self.createLayout())
+        collectionView.backgroundColor = .lightGrayCustom
+        view.addSubview(collectionView)
+        collectionView.delegate = self
+        collectionView.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, left: self.view.leftAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, right: self.view.rightAnchor)
+    }
+    
     func setupCellRegister() {
         collectionView.register(FilterMovieCollectionViewCell.self, forCellWithReuseIdentifier: FilterMovieCollectionViewCell.identifier)
         collectionView.register(MovieListCollectionViewCell.self, forCellWithReuseIdentifier: MovieListCollectionViewCell.identifier)
     }
- 
-    func setupCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: self.createLayout())
-        collectionView.backgroundColor = .lightGrayCustom
-        collectionView.dataSource = self
-        view.addSubview(collectionView)
-        collectionView.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, left: self.view.leftAnchor, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, right: self.view.rightAnchor)
+    
+    func setupCollectionViewDataSource() {
+        self.movieListDataSource = UICollectionViewDiffableDataSource<sectionLayout, MovieModel>(
+            collectionView: self.collectionView,
+            cellProvider: { (collectionView, indexPath, movie) -> UICollectionViewCell? in
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as! MovieListCollectionViewCell
+                cell.configure(with: movie)
+                self.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
+                return cell
+            }
+        )
+        //setup snapshot
+        self.movieListSnapshot.appendSections([.movieList])
     }
     
     func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section: Int, env) -> NSCollectionLayoutSection in
-            switch section {
-            case 0:
-                return self.createSectionLayout(for: .filterMovie)
-            case 1:
-                return self.createSectionLayout(for: .movieList)
-            
-            default:
-                return self.createSectionLayout(for: .movieList)
+            let sectionLayout = sectionLayout(rawValue: section)
+            if sectionLayout == .movieList {
+                return self.collectionView.movieListSection()
+            }else{
+                return self.collectionView.movieListSection()
             }
-        }
-    }
-    
-    func createSectionLayout(for sectionType: sectionLayout) -> NSCollectionLayoutSection {
-        switch sectionType {
-        case .filterMovie:
-            return self.collectionView.createFilterSection()
-        case .movieList:
-            return self.collectionView.createMovieSection()
         }
     }
 }

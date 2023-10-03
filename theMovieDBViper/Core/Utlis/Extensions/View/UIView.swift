@@ -1,7 +1,7 @@
 //
 //  View.swift
 //  theMovieDBViper
-//
+//boundarySupplementaryItems
 //  Created by Muhammad Fahmi on 27/09/23.
 //
 
@@ -10,56 +10,6 @@ import UIKit
 extension UIColor {
     public class var lightGrayCustom: UIColor {
         return UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1.00)
-    }
-}
-
-extension UICollectionView {
-    func createMovieSection() -> NSCollectionLayoutSection {
-        // Define item size
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.5),  // 20% of the container width
-            heightDimension: .fractionalHeight(1) // Full height of group
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 4, trailing: 4)
-
-        // Define the group
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0), // Full width of the container
-            heightDimension: .fractionalHeight(0.4) // 20% of the container height
-        )
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 4, trailing: 4)
-        // Create a section
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0)
-        
-        return section
-    }
-    
-    func createFilterSection() -> NSCollectionLayoutSection {
-        // Define item size
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),  // 20% of the container width
-            heightDimension: .fractionalHeight(1) // Full height of group
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-
-        // Define the group
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0), // Full width of the container
-            heightDimension: .estimated(70) // 20% of the container height
-        )
-        
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        // Create a section
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        return section
     }
 }
 
@@ -80,17 +30,6 @@ extension UIViewController {
     }
 }
 
-extension UIButton {
-    func attributedTitle(firstPart: String, secondPart: String) {
-        let atts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(white: 1, alpha: 0.87), .font: UIFont.systemFont(ofSize: 16)]
-        let attributedTitle = NSMutableAttributedString(string: "\(firstPart) ", attributes: atts)
-        
-        let boldAtts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(white: 1, alpha: 0.87), .font: UIFont.boldSystemFont(ofSize: 16)]
-        attributedTitle.append(NSAttributedString(string: secondPart, attributes: boldAtts))
-        
-        setAttributedTitle(attributedTitle, for: .normal)
-    }
-}
 
 extension UIView {
     func anchor(top: NSLayoutYAxisAnchor? = nil,

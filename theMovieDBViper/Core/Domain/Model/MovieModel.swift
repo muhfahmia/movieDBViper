@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MovieModel {
+struct MovieModel: Hashable {
     let id: Int
     let title: String
     let releaseDate: String

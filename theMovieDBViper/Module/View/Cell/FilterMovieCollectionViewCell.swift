@@ -30,7 +30,7 @@ class FilterMovieCollectionViewCell: UICollectionViewCell {
         mif.isUserInteractionEnabled = true
         return mif
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -48,7 +48,7 @@ class FilterMovieCollectionViewCell: UICollectionViewCell {
         self.addSubview(movieInput)
         self.addSubview(movieImageFilter)
         movieInput.anchor(top: self.topAnchor, left: self.leftAnchor, bottom: self.bottomAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 10, paddingRight: 10)
-        movieImageFilter.anchor(top: self.topAnchor, left: movieInput.rightAnchor, right: self.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 10, paddingRight: 10)
+        movieImageFilter.anchor(top: self.topAnchor, left: movieInput.rightAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 10, paddingRight: 10)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
         movieImageFilter.addGestureRecognizer(tap)

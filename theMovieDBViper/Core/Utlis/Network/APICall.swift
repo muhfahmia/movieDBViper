@@ -43,6 +43,7 @@ enum Endpoints {
     case moviesUpComing
     case moviesNowPlaying
     case movieImage
+    case movieDetail(id: Int)
       
     public var url: String {
         switch self {
@@ -51,6 +52,7 @@ enum Endpoints {
         case .moviesNowPlaying: return "\(APIConfig.baseUrl)movie/now_playing"
         case .moviesUpComing: return "\(APIConfig.baseUrl)movie/upcoming"
         case .movieImage: return "https://image.tmdb.org/t/p/w200"
+        case .movieDetail(let id): return "\(APIConfig.baseUrl)movie/\(id)"
         }
     }
   }
