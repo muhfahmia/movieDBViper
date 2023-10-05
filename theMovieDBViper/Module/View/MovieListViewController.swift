@@ -108,7 +108,7 @@ extension MovieListViewController {
             collectionView: self.collectionView,
             cellProvider: { (collectionView, indexPath, movie) -> UICollectionViewCell? in
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as! MovieListCollectionViewCell
-                cell.configure(with: movie)
+                cell.configure(with: movie, tooltip: "no", indexPath: indexPath)
                 self.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
                 return cell
             }

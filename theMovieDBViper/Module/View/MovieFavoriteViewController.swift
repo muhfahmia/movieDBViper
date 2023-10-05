@@ -9,22 +9,23 @@ import UIKit
 import SkeletonView
 
 protocol MovieFavoriteViewProtocol {
+    func updateSuccessDelete(indexPath: IndexPath)
     func updateSuccessMovies(with movies: [MovieModel])
     
     var movieFavoPresenter: MovieFavoritePresenterProtocol? { get set }
 }
 
 class MovieFavoriteViewController: UIViewController, MovieFavoriteViewProtocol {
-    
-    enum sectionLayout: Int, CaseIterable {
-        case movieList
+
+    enum sectionFavo: Int, CaseIterable {
+        case moviFavo
     }
     
     var movieFavoPresenter: MovieFavoritePresenterProtocol?
 
     var collectionView: UICollectionView!
-    var movieListDataSource: UICollectionViewDiffableDataSource<sectionLayout, MovieModel>!
-    var movieListSnapshot = NSDiffableDataSourceSnapshot<sectionLayout, MovieModel>()
+    var movieListDataSource: UICollectionViewDiffableDataSource<sectionFavo, MovieModel>!
+    var movieListSnapshot = NSDiffableDataSourceSnapshot<sectionFavo, MovieModel>()
     let titleAttributes: [NSAttributedString.Key: Any] = [
         .foregroundColor: UIColor.black, // Change the color to your desired color
     ]
@@ -51,12 +52,15 @@ class MovieFavoriteViewController: UIViewController, MovieFavoriteViewProtocol {
     }
     
     func updateSuccessMovies(with movies: [MovieModel]) {
-        self.movieListSnapshot.appendItems(movies, toSection: .movieList)
+        self.movieListSnapshot.appendItems(movies, toSection: .moviFavo)
         self.movieListDataSource.apply(movieListSnapshot, animatingDifferences: false)
-        print(movies)
     }
     
-    
+    func updateSuccessDelete(indexPath: IndexPath) {
+        let itemToDelete = self.movieListSnapshot.itemIdentifiers[indexPath.item]
+        let runItemToDelete = self.movieListSnapshot.deleteItems([itemToDelete])
+        self.movieListDataSource.apply(self.movieListSnapshot,animatingDifferences: true)
+    }
 }
 
 extension MovieFavoriteViewController: UICollectionViewDelegate {
@@ -92,23 +96,24 @@ extension MovieFavoriteViewController {
     }
     
     func setupCollectionViewDataSource() {
-        self.movieListDataSource = UICollectionViewDiffableDataSource<sectionLayout, MovieModel>(
+        self.movieListDataSource = UICollectionViewDiffableDataSource<sectionFavo, MovieModel>(
             collectionView: self.collectionView,
             cellProvider: { (collectionView, indexPath, movie) -> UICollectionViewCell? in
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as! MovieListCollectionViewCell
-                cell.configure(with: movie)
+                cell.configure(with: movie, tooltip: "yes", indexPath: indexPath)
+                cell.movieFavoPresenter = self.movieFavoPresenter
                 self.collectionView(collectionView, willDisplay: cell, forItemAt: indexPath)
                 return cell
             }
         )
         //setup snapshot
-        self.movieListSnapshot.appendSections([.movieList])
+        self.movieListSnapshot.appendSections([.moviFavo])
     }
     
     func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section: Int, env) -> NSCollectionLayoutSection in
-            let sectionLayout = sectionLayout(rawValue: section)
-            if sectionLayout == .movieList {
+            let sectionLayout = sectionFavo(rawValue: section)
+            if sectionLayout == .moviFavo {
                 return self.collectionView.movieListSection()
             }else{
                 return self.collectionView.movieListSection()

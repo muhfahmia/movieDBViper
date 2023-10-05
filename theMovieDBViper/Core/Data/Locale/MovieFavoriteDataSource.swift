@@ -58,22 +58,37 @@ class MovieFavoriteDataSource: MovieFavoriteDataSourceProtocol {
     }
     
     func getMovieFavorite(completion: @escaping (Result<[MovieModel], Error>) -> Void) {
-            let fetchRequest: NSFetchRequest<Movie> = Movie.fetchRequest()
-            do {
-                let movies = try context.fetch(fetchRequest)
-                var moviesModel: [MovieModel] = []
-                for movie in movies {
-                    let movieID = movie.value(forKey: "movieID") as? Int64 ?? Int64(0)
-                    let movieTitle = movie.value(forKey: "title") as? String ?? ""
-                    let moviePoster = movie.value(forKey: "posterImage") as? String ?? ""
-                    let movieReleaseDate = movie.value(forKey: "releaseDate") as? String ?? ""
-                    let mv = MovieModel(id: Int(Int64(movieID)), title: movieTitle, releaseDate: movieReleaseDate, posterImage: moviePoster)
-                    moviesModel.append(mv)
-                }
-                completion(.success(moviesModel))
-            } catch {
-                completion(.failure(error))
+        let fetchRequest: NSFetchRequest<Movie> = Movie.fetchRequest()
+        do {
+            let movies = try context.fetch(fetchRequest)
+            var moviesModel: [MovieModel] = []
+            for movie in movies {
+                let movieID = movie.value(forKey: "movieID") as? Int64 ?? Int64(0)
+                let movieTitle = movie.value(forKey: "title") as? String ?? ""
+                let moviePoster = movie.value(forKey: "posterImage") as? String ?? ""
+                let movieReleaseDate = movie.value(forKey: "releaseDate") as? String ?? ""
+                let mv = MovieModel(id: Int(Int64(movieID)), title: movieTitle, releaseDate: movieReleaseDate, posterImage: moviePoster)
+                moviesModel.append(mv)
             }
+            completion(.success(moviesModel))
+        } catch {
+            completion(.failure(error))
         }
+    }
+    
+    func deleteMovieFavorite(with movie: MovieModel, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let fetchRequest: NSFetchRequest<Movie> = Movie.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "movieID = \(movie.id)")
+        do {
+            let movies = try context.fetch(fetchRequest)
+            for movie in movies {
+                context.delete(movie)
+            }
+            try context.save()
+            completion(.success(true))
+        } catch {
+            completion(.failure(error))
+        }
+    }
     
 }
