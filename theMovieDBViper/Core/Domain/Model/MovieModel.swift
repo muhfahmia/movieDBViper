@@ -12,4 +12,5 @@ struct MovieModel: Hashable {
     let title: String
     let releaseDate: String
     let posterImage: String
+    var description: String?
 }

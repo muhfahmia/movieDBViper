@@ -42,7 +42,7 @@ enum Endpoints {
     case moviesTopRated
     case moviesUpComing
     case moviesNowPlaying
-    case movieImage
+    case movieImage(size: String?)
     case movieDetail(id: Int)
       
     public var url: String {
@@ -51,7 +51,7 @@ enum Endpoints {
         case .moviesTopRated: return "\(APIConfig.baseUrl)movie/top_rated"
         case .moviesNowPlaying: return "\(APIConfig.baseUrl)movie/now_playing"
         case .moviesUpComing: return "\(APIConfig.baseUrl)movie/upcoming"
-        case .movieImage: return "https://image.tmdb.org/t/p/w200"
+        case .movieImage(let size): return "https://image.tmdb.org/t/p/\(size ?? "w200")"
         case .movieDetail(let id): return "\(APIConfig.baseUrl)movie/\(id)"
         }
     }

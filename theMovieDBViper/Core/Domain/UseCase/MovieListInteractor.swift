@@ -8,6 +8,9 @@
 import Foundation
 
 protocol MovieListUseCase {
+    
+   
+    
     func getMovieList(typeMovie type: String, forPage page: Int, completion: @escaping (Result<MovieListReponse, Error>) -> Void)
 }
 

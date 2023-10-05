@@ -9,14 +9,14 @@ import Foundation
 import Alamofire
 
 protocol MovieDetailDataSourceProtocol {
-    func getMoviesDetail(withID id: Int, completion: @escaping (Result<MovieDetailResponse, AFError>) -> Void)
+    func getMoviesDetailFromSource(withID id: Int, completion: @escaping (Result<MovieDetailResponse, AFError>) -> Void)
 }
 
 final class MovieDetailDataSource: MovieDetailDataSourceProtocol {
     
     static let sharedMovieDetailInstance: MovieDetailDataSource = MovieDetailDataSource()
     
-    func getMoviesDetail(withID id: Int, completion: @escaping (Result<MovieDetailResponse, AFError>) -> Void) {
+    func getMoviesDetailFromSource(withID id: Int, completion: @escaping (Result<MovieDetailResponse, AFError>) -> Void) {
         guard let url = URL(string: Endpoints.movieDB.movieDetail(id: id).url)
         else { return }
         

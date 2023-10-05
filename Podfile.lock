@@ -4,23 +4,27 @@ PODS:
     - SDWebImage/Core (= 5.14.2)
   - SDWebImage/Core (5.14.2)
   - SkeletonView (1.30.4)
+  - ToastViewSwift (2.0.0)
 
 DEPENDENCIES:
   - Alamofire
   - SDWebImage
   - SkeletonView
+  - ToastViewSwift
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - SDWebImage
     - SkeletonView
+    - ToastViewSwift
 
 SPEC CHECKSUMS:
   Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
   SDWebImage: b9a731e1d6307f44ca703b3976d18c24ca561e84
   SkeletonView: 5a050f6411e697abd4cda0a8d767013399dccd69
+  ToastViewSwift: db710ad3c19c826269d004038c7b69f5b658dc6f
 
-PODFILE CHECKSUM: 6069701e477ceacc0c86ce3a4506e9ea2c908cdc
+PODFILE CHECKSUM: 214424e7bd7571de5b6e104f44588442edbbe0d1
 
 COCOAPODS: 1.11.3

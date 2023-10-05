@@ -19,11 +19,12 @@ class MainTabBarController: UITabBarController {
     private func configureController() {
         view.backgroundColor = .white
         let movieListVC = MovieListRouter.entryPoint()
+        let movieFavoVC = MovieFavoriteRouter.entryPoint()
         
         let movies = setupNavigationController(title: "Movies", inactiveImage: UIImage(systemName: "film")!, activeImage: UIImage(systemName: "film.fill")!, rootViewController: movieListVC)
-//        let tvShows = setupNavigationController(title: "TV Shows", inactiveImage: UIImage(systemName: "tv")!, activeImage: UIImage(systemName: "tv.fill")!, rootViewController: TVShowsController())
+        let favorite = setupNavigationController(title: "Favorite", inactiveImage: UIImage(systemName: "heart")!, activeImage: UIImage(systemName: "heart.fill")!, rootViewController: movieFavoVC)
         
-        setViewControllers([movies], animated: true)
+        setViewControllers([movies, favorite], animated: true)
         
     }
     

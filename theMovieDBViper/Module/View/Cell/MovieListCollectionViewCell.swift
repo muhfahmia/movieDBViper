@@ -52,9 +52,9 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with movie: MovieModel?) {
-        self.moviesTitle.text = movie?.title ?? "Unknown Title"
         self.movieImage.sd_imageIndicator = SDWebImageActivityIndicator.gray
-        self.movieImage.sd_setImage(with: URL(string: "\(Endpoints.movieDB.movieImage.url)\(movie!.posterImage)"))
+        self.movieImage.sd_setImage(with: URL(string: "\(Endpoints.movieDB.movieImage(size: "w200").url)\(movie!.posterImage)"))
+        self.moviesTitle.text = movie?.title ?? "Unknown Title"
     }
     
     required init?(coder: NSCoder) {

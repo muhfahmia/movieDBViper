@@ -25,16 +25,12 @@ class MovieListViewController: UIViewController, MovieListViewProtocol {
     var collectionView: UICollectionView!
     var movieListDataSource: UICollectionViewDiffableDataSource<sectionLayout, MovieModel>!
     var movieListSnapshot = NSDiffableDataSourceSnapshot<sectionLayout, MovieModel>()
+    let titleAttributes: [NSAttributedString.Key: Any] = [
+        .foregroundColor: UIColor.black, // Change the color to your desired color
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.black, // Change the color to your desired color
-        ]
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.titleTextAttributes = titleAttributes
-        navigationController?.navigationBar.largeTitleTextAttributes = titleAttributes
         self.title = "Popular Movies"
     
         setupCollectionView()
@@ -46,6 +42,10 @@ class MovieListViewController: UIViewController, MovieListViewProtocol {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.navigationBar.titleTextAttributes = titleAttributes
+//        navigationController?.navigationBar.largeTitleTextAttributes = titleAttributes
     
     }
     

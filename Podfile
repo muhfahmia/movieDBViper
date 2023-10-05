@@ -9,5 +9,6 @@ target 'theMovieDBViper' do
 pod 'Alamofire'
 pod 'SDWebImage'
 pod 'SkeletonView'
+pod 'ToastViewSwift'
 
 end

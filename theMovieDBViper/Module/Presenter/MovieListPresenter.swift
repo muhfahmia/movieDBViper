@@ -19,7 +19,7 @@ protocol MovieListPresenterProtocol {
     var movies: [MovieModel] { get set }
     
     func getMovieList()
-    func pushToDetail(indexPath indexPath: IndexPath)
+    func pushToDetail(indexPath: IndexPath)
 
 }
 
@@ -42,7 +42,7 @@ class MovieListPresenter: MovieListPresenterProtocol {
     }
     
     func pushToDetail(indexPath index: IndexPath) {
-        movieListRouter?.routeToDetail(on: movieListView!)
+        movieListRouter?.routeToDetail(on: movieListView!, with: self.movies[index.row])
     }
     
     func getMovieList() {

@@ -10,8 +10,7 @@ import UIKit
 
 protocol MovieListRouterProtocol {
     static func entryPoint() -> UIViewController
-    
-    func routeToDetail(on view: MovieListViewProtocol)
+    func routeToDetail(on view: MovieListViewProtocol, with movie: MovieModel)
 }
 
 class MovieListRouter: MovieListRouterProtocol {
@@ -26,11 +25,8 @@ class MovieListRouter: MovieListRouterProtocol {
         return movieListVC
     }
     
-    func routeToDetail(on view: MovieListViewProtocol) {
-        let detailVC = MovieDetailViewController()
-        let movieListVC = view as? MovieListViewController
-        movieListVC?.navigationController?.pushViewController(detailVC, animated: true)
-//        print("to detail")
+    func routeToDetail(on view: MovieListViewProtocol, with movie: MovieModel) {
+        MovieDetailRouter.movieDetailRouterShared.routeToDetail(on: view, with: movie)
     }
     
 }
