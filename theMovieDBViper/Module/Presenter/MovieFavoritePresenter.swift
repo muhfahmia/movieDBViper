@@ -32,7 +32,7 @@ class MovieFavoritePresenter: MovieFavoritePresenterProtocol {
         movieFavoriteInteractor.getMovieFavorite{ result in
             switch result {
             case .success(let data):
-                print(data)
+//                print(data)
                 self.movieFavoriteView?.updateSuccessMovies(with: data)
             case .failure(let error):
                 print(error)
@@ -43,8 +43,8 @@ class MovieFavoritePresenter: MovieFavoritePresenterProtocol {
     func deleteMovieFavorite(with movie: MovieModel, indexPath: IndexPath) {
         movieFavoriteInteractor.deleteMovieFavorite(with: movie) { result in
             switch result {
-            case .success(let data):
-                self.movieFavoriteView?.updateSuccessDelete(indexPath: indexPath)
+            case .success(_):
+                self.movieFavoriteView?.updateSuccessDelete(with: movie,indexPath: indexPath)
             case .failure(let error):
                 print(error)
             }

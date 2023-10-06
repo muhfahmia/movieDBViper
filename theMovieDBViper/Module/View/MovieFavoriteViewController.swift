@@ -9,7 +9,7 @@ import UIKit
 import SkeletonView
 
 protocol MovieFavoriteViewProtocol {
-    func updateSuccessDelete(indexPath: IndexPath)
+    func updateSuccessDelete(with movie: MovieModel, indexPath: IndexPath)
     func updateSuccessMovies(with movies: [MovieModel])
     
     var movieFavoPresenter: MovieFavoritePresenterProtocol? { get set }
@@ -56,10 +56,16 @@ class MovieFavoriteViewController: UIViewController, MovieFavoriteViewProtocol {
         self.movieListDataSource.apply(movieListSnapshot, animatingDifferences: false)
     }
     
-    func updateSuccessDelete(indexPath: IndexPath) {
-        let itemToDelete = self.movieListSnapshot.itemIdentifiers[indexPath.item]
-        let runItemToDelete = self.movieListSnapshot.deleteItems([itemToDelete])
-        self.movieListDataSource.apply(self.movieListSnapshot,animatingDifferences: true)
+    func updateSuccessDelete(with movie: MovieModel, indexPath: IndexPath) {
+        let movieModel = self.movieListSnapshot.itemIdentifiers(inSection: .moviFavo)
+        let itemToDelete = movie
+        let filtersItem  = movieModel.filter { $0.id == itemToDelete.id }
+        if filtersItem.count > 0 {
+            self.movieListSnapshot.deleteItems([itemToDelete])
+            self.movieListDataSource.apply(self.movieListSnapshot,animatingDifferences: true)
+        }else{
+            print("items not found")
+        }
     }
 }
 
