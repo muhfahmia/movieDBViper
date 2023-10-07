@@ -91,6 +91,7 @@ class MovieDetailViewController: UIViewController, MovieDetailProtocol {
         scrollView.addSubview(movieDetailView)
         scrollView.backgroundColor = .white
         scrollView.clipsToBounds = false
+        scrollView.alwaysBounceVertical = true
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

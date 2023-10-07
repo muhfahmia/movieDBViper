@@ -14,6 +14,7 @@ struct MovieDetailResponse: Codable {
     let genres: [GenresReponse]
     let description: String
     let releaseDate: String
+    var vote: Double? = 0
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -22,6 +23,7 @@ struct MovieDetailResponse: Codable {
         case genres
         case description = "overview"
         case releaseDate = "release_date"
+        case vote = "vote_average"
     }
 }
 

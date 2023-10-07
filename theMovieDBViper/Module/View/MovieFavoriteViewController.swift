@@ -21,6 +21,17 @@ class MovieFavoriteViewController: UIViewController, MovieFavoriteViewProtocol {
         case moviFavo
     }
     
+    let movieUnknown: UILabel = {
+        let ml = UILabel()
+        ml.translatesAutoresizingMaskIntoConstraints = false
+        ml.textColor = .black
+        ml.font = UIFont(name: "Arial", size: 16)
+        ml.text = "Data Movie Favorite tidak ada"
+        ml.numberOfLines = 0
+        ml.isHidden = true
+        return ml
+    }()
+    
     var movieFavoPresenter: MovieFavoritePresenterProtocol?
 
     var collectionView: UICollectionView!
@@ -33,10 +44,13 @@ class MovieFavoriteViewController: UIViewController, MovieFavoriteViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Favorite"
-    
         setupCollectionView()
         setupCellRegister()
         setupCollectionViewDataSource()
+        
+        collectionView.addSubview(movieUnknown)
+        movieUnknown.center(inView: collectionView)
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +58,12 @@ class MovieFavoriteViewController: UIViewController, MovieFavoriteViewProtocol {
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.prefersLargeTitles = true
         movieFavoPresenter?.getMovieFavorite()
-    
+        let mvmdl = self.movieListSnapshot.itemIdentifiers(inSection: .moviFavo).count
+        if mvmdl == 0 {
+            movieUnknown.isHidden = false
+        }else{
+            movieUnknown.isHidden = true
+        }
     }
     
     func movieListUpdateFail() {
@@ -53,7 +72,7 @@ class MovieFavoriteViewController: UIViewController, MovieFavoriteViewProtocol {
     
     func updateSuccessMovies(with movies: [MovieModel]) {
         self.movieListSnapshot.appendItems(movies, toSection: .moviFavo)
-        self.movieListDataSource.apply(movieListSnapshot, animatingDifferences: false)
+        self.movieListDataSource.apply(movieListSnapshot, animatingDifferences: true)
     }
     
     func updateSuccessDelete(with movie: MovieModel, indexPath: IndexPath) {
@@ -66,6 +85,12 @@ class MovieFavoriteViewController: UIViewController, MovieFavoriteViewProtocol {
         }else{
             print("items not found")
         }
+        
+        let movieMdel = self.movieListSnapshot.itemIdentifiers(inSection: .moviFavo).count
+        if movieMdel == 0 {
+            movieUnknown.isHidden = false
+        }
+        
     }
 }
 

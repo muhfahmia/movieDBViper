@@ -51,7 +51,7 @@ class MovieListViewController: UIViewController, MovieListViewProtocol {
     
     func movieListUpdateSuccess(with movies: [MovieModel]) {
         self.movieListSnapshot.appendItems(movies, toSection: .movieList)
-        self.movieListDataSource.apply(movieListSnapshot, animatingDifferences: false)
+        self.movieListDataSource.apply(movieListSnapshot, animatingDifferences: true)
     }
     
     func movieListUpdateFail() {

@@ -23,8 +23,9 @@ class MainTabBarController: UITabBarController {
         
         let movies = setupNavigationController(title: "Movies", inactiveImage: UIImage(systemName: "film")!, activeImage: UIImage(systemName: "film.fill")!, rootViewController: movieListVC)
         let favorite = setupNavigationController(title: "Favorite", inactiveImage: UIImage(systemName: "heart")!, activeImage: UIImage(systemName: "heart.fill")!, rootViewController: movieFavoVC)
+        let user = setupNavigationController(title: "About", inactiveImage: UIImage(systemName: "person.circle")!, activeImage: UIImage(systemName: "person.circle.fill")!, rootViewController: UserViewController())
         
-        setViewControllers([movies, favorite], animated: true)
+        setViewControllers([movies, favorite, user], animated: true)
         
     }
     

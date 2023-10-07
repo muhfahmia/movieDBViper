@@ -38,6 +38,24 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         return ml
     }()
     
+    var movieRelease: UILabel = {
+        let ml = UILabel()
+        ml.translatesAutoresizingMaskIntoConstraints = false
+        ml.textColor = .lightGray
+        ml.font = UIFont(name: "Arial", size: 12)
+        ml.numberOfLines = 0
+        return ml
+    }()
+    
+    var movieVote: UILabel = {
+        let ml = UILabel()
+        ml.translatesAutoresizingMaskIntoConstraints = false
+        ml.textColor = .systemOrange
+        ml.font = UIFont(name: "Arial", size: 12)
+        ml.numberOfLines = 0
+        return ml
+    }()
+    
     var movie: MovieModel?
     var indexPath: IndexPath?
     
@@ -61,8 +79,12 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     func setupUI() {
         self.addSubview(movieImage)
         self.addSubview(moviesTitle)
-        movieImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingBottom: 5)
-        moviesTitle.anchor(top: movieImage.bottomAnchor ,left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 5, paddingRight: 5)
+        self.addSubview(movieRelease)
+        self.addSubview(movieVote)
+        movieImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor)
+        moviesTitle.anchor(top: movieImage.bottomAnchor ,left: leftAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 5)
+        movieRelease.anchor(top: moviesTitle.bottomAnchor, left: leftAnchor, right: rightAnchor , paddingTop: 10, paddingLeft: 10)
+        movieVote.anchor(top: movieRelease.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 10)
         movieImage.setHeight(160)
        
     }
@@ -73,6 +95,8 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         self.movieImage.sd_imageIndicator = SDWebImageActivityIndicator.gray
         self.movieImage.sd_setImage(with: URL(string: "\(Endpoints.movieDB.movieImage(size: "w200").url)\(movie!.posterImage)"))
         self.moviesTitle.text = movie?.title ?? "Unknown Title"
+        self.movieRelease.text = "Release: \(movie!.releaseDate)"
+        self.movieVote.text = "Vote Average: \(String(format: "%2.f", movie!.vote!))"
         if ti == "yes" {
             setupTooltip()
         }

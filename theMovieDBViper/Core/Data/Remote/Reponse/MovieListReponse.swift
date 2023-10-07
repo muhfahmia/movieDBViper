@@ -26,14 +26,16 @@ struct MovieResponse: Codable {
     let title: String
     let releaseDate: String
     var posterImage: String?
+    var vote: Double
     
     enum CodingKeys: String, CodingKey {
         case id
         case title
         case releaseDate = "release_date"
         case posterImage = "poster_path"
+        case vote = "vote_average"
     }
-    init(id: Int, title: String, releaseDate: String, posterImage: String) {
+    init(id: Int, title: String, releaseDate: String, posterImage: String, vote: Double) {
         self.id = id
         self.title = title
         self.releaseDate = releaseDate
@@ -41,5 +43,6 @@ struct MovieResponse: Codable {
             self.posterImage = "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
         }
         self.posterImage = posterImage
+        self.vote = vote
     }
 }

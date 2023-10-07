@@ -34,7 +34,7 @@ class MovieDetailPresenter: MovieDetailPresenterProtocol {
         movieDetailInteractor.getMovieDetail(withID: self.movie?.id ?? 0) { result in
             switch result {
             case .success(let data):
-                self.movie = MovieModel(id: data.id, title: data.title, releaseDate: data.releaseDate, posterImage: data.backdropPath, description: data.description)
+                self.movie = MovieModel(id: data.id, title: data.title, releaseDate: data.releaseDate, posterImage: data.backdropPath, description: data.description, vote: data.vote)
                 self.movieDetailView?.movieUpdateSuccess(with: self.movie)
             case .failure(let error):
                 print("error: \(error)")

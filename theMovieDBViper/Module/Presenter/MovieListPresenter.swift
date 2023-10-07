@@ -34,7 +34,7 @@ class MovieListPresenter: MovieListPresenterProtocol {
     var totalPage = 0
     var totalMovie = 0
     var page = 0
-    var typeMovie: String = Endpoints.movieDB.moviesTopRated.url
+    var typeMovie: String = Endpoints.movieDB.moviesNowPlaying.url
     
     init(movieListUseCase: MovieListUseCase, movieListView: MovieListViewProtocol) {
         self.movieListUseCase = movieListUseCase
